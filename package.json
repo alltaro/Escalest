@@ -38,6 +38,7 @@
     "@types/dockerode": "^3.3.31",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/uuid": "^10.0.0",
-    "@types/ws": "^8.5.12"
+    "@types/ws": "^8.5.12",
+    "tsx": "^4.19.3"
   }
 }

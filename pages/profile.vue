@@ -2,10 +2,6 @@
 import { ref, onMounted } from "vue";
 import { useFetch } from "#app"; // Utilisez useFetch pour appeler les API routes Nuxt
 
-definePageMeta({
-  layout: "public",
-});
-
 interface UserInfo {
   username: string;
   email: string;

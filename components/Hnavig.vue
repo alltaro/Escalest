@@ -9,7 +9,7 @@
         </UHorizontalNavigation>
 
         <!-- Barre de recherche des secteurs -->
-        <div class="flex justify-center items-center py-3">
+        <div v-if="isIndexPage" class="hidden md:flex justify-center items-center py-3">
             <div class="flex w-1/2">
                 <!-- Champ de recherche -->
                 <UInputMenu v-model="searchQuery" :options="secteurs" by="name" placeholder="Rechercher un secteur..."
@@ -22,6 +22,9 @@
                 </UButton>
             </div>
         </div>
+        <UModal v-model="AuthH">
+            <auth />
+        </UModal>
     </div>
 </template>
 
@@ -30,9 +33,13 @@ let linksHub = (ref < Map) | (null > null);
 const AuthH = ref(false);
 
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useFetch } from '#app'
 
+
+
+const route = useRoute()
+const isIndexPage = computed(() => route.path === "/")
 // Instance du router
 const router = useRouter()
 const token = useCookie("authToken").value;

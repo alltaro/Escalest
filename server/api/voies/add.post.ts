@@ -2,17 +2,15 @@ import { defineEventHandler, readMultipartFormData } from "h3";
 import connectToDB from "../../../utils/db";
 import Voie from "../../../models/Voies";
 import { uploadImage } from "../../../utils/upload";
-import mongoose from "mongoose"; // Importer mongoose pour utiliser ObjectId
+import mongoose from "mongoose"; 
 import { verifyJWT } from "~/utils/jwt";
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) => { 
   await connectToDB();
 
-  // Lire les données multipart
   const formData = await readMultipartFormData(event);
-  console.log(formData); // Debug: Afficher le contenu de formData
+  console.log(formData); // Debug
 
-  // Extraire le token JWT du header Authorization
   const token = getHeader(event, "authorization")?.replace("Bearer ", "");
   if (!token) {
     return { success: false, message: "Token d'authentification manquant" };
@@ -22,7 +20,6 @@ export default defineEventHandler(async (event) => {
     return { success: false, message: "Données invalides" };
   }
 
-  // Décoder le token JWT pour récupérer l'ID de l'utilisateur
   let userId;
   try {
     const decoded = verifyJWT(token); 
@@ -31,33 +28,34 @@ export default defineEventHandler(async (event) => {
     return { success: false, message: "Token invalide ou expiré" };
   }
   const createdBy = new mongoose.Types.ObjectId(userId);
+  const voieName = formData.find((item) => item.name === "name")?.data.toString();
+  const secteurId = formData.find((item) => item.name === "sectorId")?.data.toString();
+  const voieDescription = formData.find((item) => item.name === "description")?.data.toString();
+  const estimatedDifficulties = parseFloat(formData.find((item) => item.name === "estimatedDifficulties")?.data.toString() || "0");
+  const file = formData.find((item) => item.name === "images")?.data;
 
-  const voieName = formData.find((item) => item.name === "voieName")?.data.toString();
-  const secteur = formData.find((item) => item.name === "secteur")?.data.toString();
-  const voieDescription = formData.find((item) => item.name === "voieDescription")?.data.toString();
-  const file = formData.find((item) => item.name === "image")?.data;
+  console.log('Form Data:', { voieName, secteurId, voieDescription, createdBy, file });
 
-  console.log('Form Data:', { voieName, secteur, voieDescription, createdBy, file });
-
-  if (!voieName || !secteur || !voieDescription || !createdBy) {
+  if (!voieName || !secteurId || !voieDescription || !createdBy) {
     return { success: false, message: "Tous les champs sont requis" };
   }
 
   try {
     const newVoie = new Voie({
       voieName,
-      secteur,
+      secteur: new mongoose.Types.ObjectId(secteurId), // Utilisation de l'ID du secteur
       voieDescription,
       createdBy,
       difficultyRatings: [],
       completedBy: [],
-      imageUrl: null, // On mettra à jour après l'upload
+      imageUrl: null,
+      estimatedDifficulties,
     });
 
     await newVoie.save();
 
-    // Upload de l'image après création pour récupérer l'ID de la voie
     if (file) {
+      console.log("file upload")
       const imageUrl = await uploadImage(file, newVoie._id.toString());
       newVoie.imageUrl = imageUrl;
       await newVoie.save();

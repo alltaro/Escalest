@@ -14,7 +14,7 @@ async function fetchVoie() {
             method: 'POST',
             body: { VoieId: voieId },
         });
-
+        console.log(voie)
         if (response.success) {
             voie.value = response.voie;
             images.value = response.images; // Récupérer les images
@@ -40,7 +40,7 @@ onMounted(fetchVoie);
             <h1>{{ voie.voieName }}</h1>
             <p><strong>Secteur :</strong> {{ voie.secteur?.name }}</p>
             <p><strong>Description :</strong> {{ voie.voieDescription }}</p>
-            <p><strong>Créée par :</strong> {{ voie.createdBy }}</p>
+            <p><strong>Créée par :</strong> {{ voie.createdBy.username }}</p>
 
             <h2>Images de la voie</h2>
             <div v-if="images.length > 0">

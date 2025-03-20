@@ -5,7 +5,9 @@ export default defineNuxtConfig({
     aut: {
       mongoUri: "mongodb://192.168.1.33:27017/Escalade",
       mongoSecret:
-        "6404f35f37147bca8b50c17e52425a70af0e4b4c7a47942046b305b07a2aac6a"
+        "6404f35f37147bca8b50c17e52425a70af0e4b4c7a47942046b305b07a2aac6a",
+      mongoUser:'alttaro',
+      mongoPassword:'YwIcvjVaWiQgttiC'
     },
   },
   compatibilityDate: "2024-04-03",

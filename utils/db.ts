@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://192.168.1.33:27017/Escalade"; // Mets ton URI MongoDB ici
+const MONGO_URI = "mongodb+srv://alttaro:YwIcvjVaWiQgttiC@escalade.aacyi.mongodb.net/Escalade?retryWrites=true&w=majority&appName=Escalade"; // Mets ton URI MongoDB ici
 
 const connectToDB = async () => {
   if (mongoose.connection.readyState >= 1) {

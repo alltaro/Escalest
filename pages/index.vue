@@ -3,9 +3,7 @@ const { loggedIn } = useAuth();
 const isOpen = ref(false);
 const toast = useToast();
 
-definePageMeta({
-  layout: "public",
-});
+
 
 function load() {
   toast.add({

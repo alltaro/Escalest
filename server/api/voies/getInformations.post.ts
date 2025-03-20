@@ -14,14 +14,17 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    let voie = await Voie.findOne({ _id: VoieId }).populate('secteur');
+    // Peupler à la fois "secteur" et "createdBy"
+    let voie = await Voie.findOne({ _id: VoieId })
+      .populate('secteur')       // Peupler le champ secteur
+      .populate('createdBy');    // Peupler le champ createdBy (utilisateur)
+
     if (!voie) {
       return { success: false, message: "Voie non trouvée" };
     }
 
-    // Récupérer l'utilisateur qui a créé la voie
-    const user = await User.findOne({ _id: voie.createdBy });
-    voie.createdBy = user ? user.username : "Utilisateur inconnu";
+    // Ne conserver que le "username" de l'utilisateur dans createdBy
+    voie.createdBy = voie.createdBy ? voie.createdBy.username : "Utilisateur inconnu";
 
     // Récupérer les images de la voie
     const images = await getImagesForVoie(VoieId);
