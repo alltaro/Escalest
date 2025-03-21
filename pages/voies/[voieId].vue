@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
+
 const isLoading = ref(true);
 const route = useRoute();
 const voieId = route.params.voieId;
@@ -23,9 +24,8 @@ async function fetchVoie() {
         }
     } catch (error) {
         console.error('Erreur réseau :', error);
-    } finally {
-        isLoading.value = false;
     }
+    isLoading.value = false;
 }
 
 onMounted(fetchVoie);

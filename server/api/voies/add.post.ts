@@ -12,10 +12,10 @@ export default defineEventHandler(async (event) => {
   console.log(formData); // Debug
 
   const token = getHeader(event, "authorization")?.replace("Bearer ", "");
-  if (!token) {
+  if (!token || token == "") {
     return { success: false, message: "Token d'authentification manquant" };
   }
-
+  console.log("token : "+token)
   if (!formData) {
     return { success: false, message: "Données invalides" };
   }
@@ -24,19 +24,23 @@ export default defineEventHandler(async (event) => {
   try {
     const decoded = verifyJWT(token); 
     userId = decoded.id; 
+    console.log("userId : "+decoded )
+    console.log(decoded)
   } catch (err) {
     return { success: false, message: "Token invalide ou expiré" };
   }
+
   const createdBy = new mongoose.Types.ObjectId(userId);
+  console.log("createdBy : " +createdBy)
   const voieName = formData.find((item) => item.name === "name")?.data.toString();
   const secteurId = formData.find((item) => item.name === "sectorId")?.data.toString();
   const voieDescription = formData.find((item) => item.name === "description")?.data.toString();
-  const estimatedDifficulties = parseFloat(formData.find((item) => item.name === "estimatedDifficulties")?.data.toString() || "0");
+  const difficultyRatings = [formData.find((item) => item.name === "difficultyRatings")?.data.toString()];
   const file = formData.find((item) => item.name === "images")?.data;
 
   console.log('Form Data:', { voieName, secteurId, voieDescription, createdBy, file });
 
-  if (!voieName || !secteurId || !voieDescription || !createdBy) {
+  if (!voieName || !secteurId || !voieDescription || !createdBy ) {
     return { success: false, message: "Tous les champs sont requis" };
   }
 
@@ -46,10 +50,9 @@ export default defineEventHandler(async (event) => {
       secteur: new mongoose.Types.ObjectId(secteurId), // Utilisation de l'ID du secteur
       voieDescription,
       createdBy,
-      difficultyRatings: [],
+      difficultyRatings,
       completedBy: [],
       imageUrl: null,
-      estimatedDifficulties,
     });
 
     await newVoie.save();

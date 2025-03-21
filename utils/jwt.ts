@@ -1,35 +1,26 @@
-import { SignJWT, jwtVerify } from "jose";
-import type { AuthPayload } from "~/types";
-import { useRuntimeConfig } from "#imports"; // Import correct
 import { getUserInfo } from "~/utils/auth"; // Chemin correct vers ta fonction
 
-const config = useRuntimeConfig();
-const JWT_SECRET = new TextEncoder().encode("6404f35f37147bca8b50c17e52425a70af0e4b4c7a47942046b305b07a2aac6a" as string);
+import jwt from "jsonwebtoken";
 
-export async function createJWT(email: string) {
-  // Créer le JWT
-  return await new SignJWT({ email })
-    .setProtectedHeader({ alg: "HS256" })
-    .setIssuer("mongoose-auth.nuxt.space")
-    .setIssuedAt()
-    .setExpirationTime("2h")
-    .sign(JWT_SECRET);
+const JWT_SECRET = "6404f35f37147bca8b50c17e52425a70af0e4b4c7a47942046b305b07a2aac6a"; // Clé secrète
+
+export function createJWT(id: string, email: string) {
+  return jwt.sign(
+    { id, email },
+    JWT_SECRET,
+    { expiresIn: "2h" } // Expiration dans 2 heures
+  );
 }
 
-
-
-export async function verifyJWT(token: string) {
-  const config = useRuntimeConfig();
-  const JWT_SECRET = new TextEncoder().encode("6404f35f37147bca8b50c17e52425a70af0e4b4c7a47942046b305b07a2aac6a" as string); // Cast explicite à 'string'
-
-  // Vérifier et retourner le payload du JWT
-  return (await jwtVerify(token, JWT_SECRET)).payload as AuthPayload;
+export function verifyJWT(token: string) {
+  try {
+    return jwt.verify(token, JWT_SECRET) as { id: string; email: string };
+  } catch (error) {
+    console.error("Erreur lors de la vérification du JWT :", error);
+    return null; // Retourne null si le token est invalide
+  }
 }
 
-interface useIn {
-  username:string;
-  email:string;
-}
 
 export async function getUsernameFromToken(token: string): Promise<string> {
   // Utiliser getUserInfo pour récupérer l'username

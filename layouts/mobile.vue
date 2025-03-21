@@ -2,7 +2,7 @@
     <div>
         <header class=" top-bar fixed top-0 left-0 w-full bg-gray-900 text-white p-4">
             <button @click="toggleSidebar" class="text-xl">☰</button>
-            <span class="ml-4 squircle title">Site</span>
+            <button class="ml-4 squircle title">Site</button>
             <button @click='goToServeurs' class="search-btn">Rechercher un secteur</button>
         </header>
 

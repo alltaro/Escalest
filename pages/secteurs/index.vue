@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex behind">
+        <div class="flex behind w2/3">
             <!-- Champ de recherche -->
             <UInputMenu v-model="searchQuery" :options="secteurs" by="name" placeholder="Rechercher un secteur..."
                 icon="i-heroicons-search" class="flex-1">
@@ -108,6 +108,8 @@ onMounted(async () => {
     background: #333;
     text-align: center;
 }
+
+@media (min-width: 768px) {}
 
 /* Responsive : pleine largeur sur mobile */
 @media (max-width: 768px) {

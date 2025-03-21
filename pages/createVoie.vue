@@ -39,7 +39,7 @@ async function addRoute() {
   formData.append('name', routeForm.value.name);
   formData.append('sectorId', routeForm.value.sectorId || ''); // Utiliser sectorId
   formData.append('description', routeForm.value.description);
-  formData.append('estimatedDifficulties', routeForm.value.estimatedDifficulties.toString());
+  formData.append('difficultyRatings', routeForm.value.difficultyRatings.toString());
 
   const token = useCookie('authToken').value;
 
@@ -55,7 +55,7 @@ async function addRoute() {
 
     if (response.success) {
       toast.add({ title: 'Succès', description: 'Voie ajoutée !', color: 'green' });
-      routeForm.value = { name: '', sectorId: null, description: '', estimatedDifficulties: 0, ratings: 0, files: [] };
+      routeForm.value = { name: '', sectorId: null, description: '', difficultyRatings: 0, ratings: 0, files: [] };
     } else {
       toast.add({ title: 'Erreur', description: response.message, color: 'red' });
     }
@@ -90,8 +90,8 @@ onMounted(fetchSectors);
           searchable />
       </UFormGroup>
 
-      <UFormGroup label="Difficulté estimée" name="estimatedDifficulties" class="mb-3">
-        <UInput v-model.number="routeForm.estimatedDifficulties" type="number" step="0.5" min="1" max="10"
+      <UFormGroup label="Difficulté estimée" name="difficultyRatings" class="mb-3">
+        <UInput v-model.number="routeForm.difficultyRatings" type="number" step="0.5" min="1" max="10"
           placeholder="Difficulté estimée" />
       </UFormGroup>
 

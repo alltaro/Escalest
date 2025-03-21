@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
   const token = jwt.sign(
     { id: user._id, email: user.email },
     "6404f35f37147bca8b50c17e52425a70af0e4b4c7a47942046b305b07a2aac6a"
-  );
+  ) ;
 
   console.log("return token");
   return { token: token, loggedIn: true };

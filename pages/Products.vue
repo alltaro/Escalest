@@ -1,9 +1,6 @@
 <script setup></script>
 <template>
   <div>
-    <Hnavigation />
-    <div>
-      <h1>Products</h1>
-    </div>
+    <h1>Products</h1>
   </div>
 </template>

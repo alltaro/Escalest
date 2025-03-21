@@ -55,15 +55,15 @@ linksHub = ref([
         },
         {
             Num: "0",
-            label: "Spécificités",
+            label: "Secteurs",
             icon: "i-heroicons-command-line",
-            to: "/Specs",
+            to: "/secteurs",
         },
         {
             Num: "0",
-            label: "Produits",
+            label: "Créer une voie",
             icon: "i-heroicons-command-line",
-            to: "/Products",
+            to: "/createVoie",
         },
     ],
     [
