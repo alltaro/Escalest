@@ -5,7 +5,7 @@ const emit = defineEmits(["onLogin", "onRegister", "onError"]);
 const usernameError = ref<string | null>(null);
 const toast = useToast();
 let cookie = ref<null | string>(null);
- 
+
 const tabs = [
   {
     label: "Log In",
@@ -66,7 +66,6 @@ async function login() {
     });
     if (data.loggedIn) {
       useCookie("authToken").value = data.token
-      navigateTo("/dashboard");
       onLogin(loginForm.value.email);
     }
   } catch (error: any) {
