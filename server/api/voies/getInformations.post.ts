@@ -1,8 +1,8 @@
-import { defineEventHandler, readBody } from 'h3'; 
-import dbConnect from '../../../utils/db';
-import Voie from '../../../models/Voies';
-import User from '~/models/User';
-import { getImagesForVoie } from '~/utils/upload';
+import { defineEventHandler, readBody } from "h3";
+import dbConnect from "../../../utils/db";
+import Voie from "../../../models/Voies";
+import User from "~/models/User";
+import { getImagesForVoie } from "~/utils/upload";
 
 export default defineEventHandler(async (event) => {
   await dbConnect();
@@ -16,15 +16,15 @@ export default defineEventHandler(async (event) => {
   try {
     // Peupler à la fois "secteur" et "createdBy"
     let voie = await Voie.findOne({ _id: VoieId })
-      .populate('secteur')       // Peupler le champ secteur
-      .populate('createdBy');    // Peupler le champ createdBy (utilisateur)
+      .populate("secteur") // Peupler le champ secteur
+      .populate("createdBy"); // Peupler le champ createdBy (utilisateur)
 
     if (!voie) {
       return { success: false, message: "Voie non trouvée" };
     }
 
     // Ne conserver que le "username" de l'utilisateur dans createdBy
-    voie.createdBy = voie.createdBy ? voie.createdBy.username : "Utilisateur inconnu";
+    voie.createdBy = { username: voie.createdBy.username, _id: voie.createdBy._id };
 
     // Récupérer les images de la voie
     const images = await getImagesForVoie(VoieId);

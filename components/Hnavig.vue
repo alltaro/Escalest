@@ -67,7 +67,7 @@ linksHub = ref([
     },
 
     token
-      ? {
+      ? { 
           label: "Connecté",
           to: "/profil",
         }

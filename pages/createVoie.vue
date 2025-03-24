@@ -12,7 +12,7 @@ const routeForm = ref({
   files: [] as File[],
 });
 
-const sectors = ref<{ id: string; name: string }[]>([]); // Liste des secteurs
+const sectors = ref<{ _id: string; name: string }[]>([]); // Liste des secteurs avec _id
 const isLoading = ref(false);
 
 // Charger les secteurs
@@ -20,6 +20,7 @@ async function fetchSectors() {
   const response = await $fetch("/api/secteurs/getSecteurs");
   if (response.success) {
     sectors.value = response.secteurs;
+    console.log(sectors.value);
   } else {
     toast.add({
       title: "Erreur",
@@ -45,9 +46,17 @@ async function addRoute() {
   });
 
   formData.append("name", routeForm.value.name);
-  formData.append("sectorId", routeForm.value.sectorId || ""); // Utiliser sectorId
+  formData.append("sectorId", routeForm.value.sectorId.value); // Utiliser sectorId (id du secteur)
+  console.log(1);
+  console.log(routeForm.value.sectorId);
   formData.append("description", routeForm.value.description);
-  formData.append("difficultyRatings", routeForm.value.difficultyRatings);
+
+  // Trouver la clé sélectionnée dans le dictionnaire de difficultés
+  const difficultys = DicItems[routeForm.value.difficultyRatings.toString()];
+  // Si la clé existe, l'ajouter au formData avec la valeur correcte
+  if (difficultys) {
+    formData.append("difficultyRatings", difficultys); // Envoie la clé
+  }
 
   const token = useCookie("authToken").value;
 
@@ -109,7 +118,25 @@ const difficulties = () => {
   for (let x = 3; x <= 9; x++) {
     for (let y = 0; y < 3; y++) {
       for (let z = 0; z < 2; z++) {
-        diff.push(x + step[y] + stept[z]);
+        diff.push("" + x + step[y] + stept[z]);
+      }
+    }
+  }
+  return diff;
+};
+const difficulties_dict = () => {
+  const diff: Record<string, number> = {}; // 👈 Déclare `diff` avec une indexation explicite
+
+  const step: string[] = ["a", "b", "c"];
+  const stept: string[] = ["", "+"];
+
+  let value = 1; // Valeur croissante pour chaque cotation
+
+  for (let x = 3; x <= 9; x++) {
+    for (let y = 0; y < step.length; y++) {
+      for (let z = 0; z < stept.length; z++) {
+        const key = `${x}${step[y]}${stept[z]}`;
+        diff[key.toString()] = value++;
       }
     }
   }
@@ -118,17 +145,24 @@ const difficulties = () => {
 
 // Charger les secteurs lors du montage du composant
 const ListItems = difficulties();
-onMounted(fetchSectors);
+const DicItems = difficulties_dict();
+
+onMounted(async () => {
+  console.log(1);
+  await fetchSectors();
+  console.log(2);
+});
 </script>
+
 <template>
-  <main style="align-items: center">
-    <UForm :state="routeForm" class="w-1/2" style="align-self: center">
+  <main class="justify-center items-center w-1/1 md:flex">
+    <UForm :state="routeForm" class="w-2/3" style="margin-top: 30px">
       <UFormGroup label="Nom de la voie" name="name" class="mb-3" required>
         <UInput v-model="routeForm.name" placeholder="Nom de la voie" />
       </UFormGroup>
 
       <UFormGroup label="Secteur" name="sectorId" class="mb-3" required>
-        <USelectMenu v-model="routeForm.sectorId" :options="sectors.map((s) => ({ value: s._id, label: s.nom }))" searchable placeholder="serveur" />
+        <USelectMenu v-model="routeForm.sectorId" :options="sectors.map((s) => ({ value: s._id, label: s.nom }))" searchable placeholder="Secteur" />
       </UFormGroup>
 
       <UFormGroup label="Difficulté estimée" name="difficultyRatings" class="mb-3">

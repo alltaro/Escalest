@@ -5,7 +5,7 @@ const emit = defineEmits(["onLogin", "onRegister", "onError"]);
 const usernameError = ref<string | null>(null);
 const toast = useToast();
 let cookie = ref<null | string>(null);
-
+AuthH.value = false;
 const tabs = [
   {
     label: "Log In",
@@ -65,7 +65,7 @@ async function login() {
       credentials: "include",
     });
     if (data.loggedIn) {
-      useCookie("authToken").value = data.token
+      useCookie("authToken").value = data.token;
       onLogin(loginForm.value.email);
     }
   } catch (error: any) {
@@ -81,8 +81,7 @@ const validateUsername = () => {
   } else if (registerForm.value.username.length < 3) {
     usernameError.value = "3 caracter minimum";
   } else if (!pattern.test(registerForm.value.username)) {
-    usernameError.value =
-      "Username can only contain letters, numbers and underscore";
+    usernameError.value = "Username can only contain letters, numbers and underscore";
   } else {
     usernameError.value = null;
   }
@@ -101,7 +100,7 @@ async function register() {
         console.log("emit");
         onRegister(registerForm.value.username);
       } else {
-        console.log("not registered")
+        console.log("not registered");
       }
     } catch (error: any) {
       console.log(error);
@@ -120,9 +119,7 @@ async function register() {
               <p class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                 {{ item.label }}
               </p>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Log in to your account.
-              </p>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Log in to your account.</p>
             </div>
           </div>
         </template>
@@ -132,20 +129,16 @@ async function register() {
             <UInput v-model="loginForm.email" placeholder="user" icon="i-ph-envelope" />
           </UFormGroup>
           <UFormGroup label="Password" name="password" required>
-            <UInput v-model="loginForm.password" placeholder="password" icon="i-ph-lock"
-              :type="hidden ? 'password' : 'text'" :ui="{ icon: { trailing: { pointer: '' } } }">
+            <UInput v-model="loginForm.password" placeholder="password" icon="i-ph-lock" :type="hidden ? 'password' : 'text'" :ui="{ icon: { trailing: { pointer: '' } } }">
               <template #trailing>
-                <UButton :icon="hidden ? 'i-ph-eye-closed' : 'i-ph-eye'" variant="link" :padded="false"
-                  @click="hidden = !hidden" />
+                <UButton :icon="hidden ? 'i-ph-eye-closed' : 'i-ph-eye'" variant="link" :padded="false" @click="hidden = !hidden" />
               </template>
             </UInput>
           </UFormGroup>
         </UForm>
 
         <template #footer>
-          <UButton class="w-full justify-center" @click="login">
-            Log in
-          </UButton>
+          <UButton class="w-full justify-center" @click="login"> Log in </UButton>
         </template>
       </UCard>
     </template>
@@ -158,9 +151,7 @@ async function register() {
               <p class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
                 {{ item.label }}
               </p>
-              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                Create an account
-              </p>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Create an account</p>
             </div>
           </div>
         </template>
@@ -175,19 +166,15 @@ async function register() {
           {{ usernameError }}
         </div>
         <UFormGroup label="Password" name="password" required>
-          <UInput v-model="registerForm.password" placeholder="password" icon="i-ph-lock"
-            :type="hidden ? 'password' : 'text'" :ui="{ icon: { trailing: { pointer: '' } } }">
+          <UInput v-model="registerForm.password" placeholder="password" icon="i-ph-lock" :type="hidden ? 'password' : 'text'" :ui="{ icon: { trailing: { pointer: '' } } }">
             <template #trailing>
-              <UButton :icon="hidden ? 'i-ph-eye-closed' : 'i-ph-eye'" variant="link" :padded="false"
-                @click="hidden = !hidden" />
+              <UButton :icon="hidden ? 'i-ph-eye-closed' : 'i-ph-eye'" variant="link" :padded="false" @click="hidden = !hidden" />
             </template>
           </UInput>
         </UFormGroup>
 
         <template #footer>
-          <UButton class="w-full justify-center" type="submit" color="cyan">
-            Register
-          </UButton>
+          <UButton class="w-full justify-center" type="submit" color="cyan"> Register </UButton>
         </template>
       </UCard>
     </template>

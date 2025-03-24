@@ -5,7 +5,7 @@ interface IVoie extends Document {
   secteur: Types.ObjectId; // Référence à un secteur
   voieDescription: string;
   createdBy: Types.ObjectId; // Référence à l'utilisateur créateur
-  difficultyRatings: string[]; // Notes de difficulté (1 à 5)
+  difficultyRatings: number[]; // Notes de difficulté (1 à 5)
   completedBy: Types.ObjectId[]; // Liste des utilisateurs ayant réussi la voie
 }
 
@@ -14,9 +14,8 @@ const VoieSchema = new Schema<IVoie>({
   secteur: { type: Schema.Types.ObjectId, ref: "Secteur", required: true },
   voieDescription: { type: String, required: true },
   createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  difficultyRatings: { type: [String], default: [] },
+  difficultyRatings: { type: [Number], required: true },
   completedBy: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
 });
 
-export default mongoose.models.Voie ||
-  mongoose.model<IVoie>("Voie", VoieSchema);
+export default mongoose.models.Voie || mongoose.model<IVoie>("Voie", VoieSchema);
