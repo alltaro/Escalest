@@ -8,7 +8,7 @@ export async function uploadImage(file: Buffer, voieId: string) {
   await mkdir(dirPath, { recursive: true });
 
   const fileName = `${Date.now()}.jpg`; // Nom unique pour éviter les conflits
-  const filePath = join(dirPath, fileName);
+  const filePath = join(dirP ath, fileName);
 
   await writeFile(filePath, file);
   return `/uploads/${voieId}/${fileName}`; // URL de l'image
@@ -16,7 +16,7 @@ export async function uploadImage(file: Buffer, voieId: string) {
 
 // Fonction pour récupérer toutes les images d'une voie
 export async function getImagesForVoie(voieId: string) {
-  const dirPath = join(process.cwd(), "./public/uploads", voieId);
+  const dirPath = join("./public/uploads", voieId);
   try {
     const files = await readdir(dirPath);
     return files.map((file) => `/uploads/${voieId}/${file}`);
