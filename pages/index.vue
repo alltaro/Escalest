@@ -1,9 +1,7 @@
-<script setup lang="ts">
+<script setup>
 const { loggedIn } = useAuth();
 const isOpen = ref(false);
 const toast = useToast();
-
-
 
 function load() {
   toast.add({

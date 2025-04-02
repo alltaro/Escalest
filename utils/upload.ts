@@ -8,7 +8,7 @@ export async function uploadImage(file: Buffer, voieId: string) {
   await mkdir(dirPath, { recursive: true });
 
   const fileName = `${Date.now()}.jpg`; // Nom unique pour éviter les conflits
-  const filePath = join(dirP ath, fileName);
+  const filePath = join(dirPath, fileName);
 
   await writeFile(filePath, file);
   return `/uploads/${voieId}/${fileName}`; // URL de l'image

@@ -147,11 +147,7 @@ const difficulties_dict = () => {
 const ListItems = difficulties();
 const DicItems = difficulties_dict();
 
-onMounted(async () => {
-  console.log(1);
-  await fetchSectors();
-  console.log(2);
-});
+fetchSectors();
 </script>
 
 <template>

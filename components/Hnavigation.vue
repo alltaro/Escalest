@@ -1,62 +1,78 @@
-<script setup>
-let linksHub = (ref < Map) | (null > null);
-const AuthH = ref(false);
+<template>
+  <div>
+    <UNavigationMenu highlight color="neutral" :orientation="orientation" :items="linksHub" class="w-full" />
+  </div>
+</template>
+<script setup lang="ts">
+import { useIsMobile } from "@/composables/useIsMobile";
+const { isMobile } = useIsMobile();
+const orientation = ref(isMobile.value ? "vertical" : "horizontal");
 
-const token = useCookie("authToken").value;
-console.log(`token : ${token}`);
-
-linksHub = ref([
+const linksHub = ref([
   [
     {
-      Num: "0",
+      label: "",
+      icon: "material-symbols:menu",
+    },
+  ],
+  [
+    {
       label: "Accueil",
       icon: "i-heroicons-home",
       to: "/",
     },
     {
-      Num: "0",
-      label: "Spécificités",
+      label: "Secteurs",
       icon: "i-heroicons-command-line",
-      to: "/Specs",
+      to: "/secteurs",
     },
     {
-      Num: "0",
-      label: "Produits",
+      label: "Créer une voie",
       icon: "i-heroicons-command-line",
-      to: "/Products",
+      to: "/createVoie",
     },
   ],
   [
     {
       label: "",
-      Num: "1",
     },
-
-    token
-      ? {
-        label: "Dashboard",
-        to: "/dashboard",
-      }
-      : {
-        label: "Se connecter",
-        click: () => {
-          AuthH.value = true;
-        },
-      },
   ],
 ]);
 </script>
-
-<template>
-  <div>
-    <UHorizontalNavigation :links="linksHub" class="border-b border-gray-200 dark:border-gray-800">
-      <template #default="{ link }">
-        <colorMod v-if="link.Num == 1" />
-        <span class="group-hover:text-primary relative">{{ link.label }}</span>
-      </template>
-    </UHorizontalNavigation>
-    <UModal v-model="AuthH">
-      <auth />
-    </UModal>
-  </div>
-</template>
+<style scoped>
+.header {
+  width: 100%;
+  position: absolute;
+  background: transparent;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.nav {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: transparent;
+}
+.nav-links {
+  display: flex;
+  gap: 55px;
+}
+.nav-links:nth-child(2n) {
+  margin-left: 30px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 4px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.logo {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 4px;
+}
+.search-bar {
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+</style>

@@ -67,7 +67,7 @@ linksHub = ref([
     },
 
     token
-      ? { 
+      ? {
           label: "Connecté",
           to: "/profil",
         }
@@ -130,8 +130,7 @@ const handleAcceder = () => {
 };
 
 // Charger les secteurs au montage
-onMounted(async () => {
-  Get();
-  console.log(secteurs.value);
-});
+
+Get();
+console.log(secteurs.value);
 </script>

@@ -40,7 +40,7 @@ onMounted(() => {
     </div>
     <div v-else>
       <h1>{{ voie.voieName }}</h1>
-      <p><strong>Secteur :</strong> {{ voie.secteur?.name }}</p>
+      <p><strong>Secteur :</strong> {{ voie.secteur?.nom }}</p>
       <p><strong>Description :</strong> {{ voie.voieDescription }}</p>
       <p><strong>Créée par :</strong> {{ voie.createdBy.username }}</p>
 
